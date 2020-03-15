@@ -30,8 +30,12 @@
         </ul>
 
         <nav>
-            <menu><router-link :to="{name: 'AutoComplete'}">AutoComplete</router-link></menu>
-            <menu><router-link :to="{name: 'Carousel'}">Carousel</router-link></menu>
+            <menu>
+                <router-link :to="{name: 'AutoComplete'}">AutoComplete</router-link>
+            </menu>
+            <menu>
+                <router-link :to="{name: 'Carousel'}">Carousel</router-link>
+            </menu>
         </nav>
     </div>
 </template>
@@ -42,13 +46,17 @@ export default {
     data() {
         return {
             msg: 'Welcome to Your Vue.js App'
-        }
+        };
     }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .hello {
+        margin-top: 60px;
+    }
+
     h3 {
         margin: 40px 0 0;
     }
