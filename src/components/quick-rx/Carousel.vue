@@ -1,6 +1,6 @@
 <template>
-    <div class="viewer">
-        <ul class="container">
+    <div class="viewer" id="viewer">
+        <ul class="container" id="container">
             <li class="panel darkorange">Pannel 1</li>
             <li class="panel magenta">Pannel 2</li>
             <li class="panel chartreuse">Pannel 3</li>
@@ -10,8 +10,45 @@
 </template>
 
 <script>
+import {fromEvent} from 'rxjs';
+import {switchMap, takeUntil} from 'rxjs/operators';
+
 export default {
-    name: 'Carousel'
+    name: 'Carousel',
+    mounted() {
+        // const $viewer = document.getElementById('viewer');
+        const $container = document.getElementById('container');
+
+        const IS_SUPPORT_TOUCH = 'ontouchstart' in window;
+        const EVENTS = {
+            start: IS_SUPPORT_TOUCH ? 'touchstart' : 'mousedown',
+            move: IS_SUPPORT_TOUCH ? 'touchmove' : 'mousemove',
+            end: IS_SUPPORT_TOUCH ? 'touchend' : 'mouseup'
+        };
+
+        const $start = fromEvent($container, EVENTS.start);
+        const $move = fromEvent($container, EVENTS.move);
+        const $end = fromEvent($container, EVENTS.end);
+        const $drag = $start.pipe(
+            switchMap(() => $move.pipe(
+                takeUntil($end)
+            ))
+        );
+
+        // $start.subscribe((event) => {
+        //     console.log('$start', event);
+        // });
+        // $move.subscribe((event) => {
+        //     console.log('$move', event);
+        // });
+        // $end.subscribe((event) => {
+        //     console.log('$end', event);
+        // });
+        $drag.subscribe((event) => {
+            console.log('$drag', event);
+        });
+
+    }
 };
 </script>
 
